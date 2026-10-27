@@ -6361,7 +6361,8 @@ html,body{margin:0;background:var(--jh-color-container-page,#fff);font-family:'F
     /* Let the filter popovers show outside the group. */
     jkhy-filter-group.filters { flex: 1 1 auto; min-width: 0; overflow: visible; max-height: 36px; } /* its hidden "+ Filters" overflow menu still takes height */
     .count { font-size: 12px; line-height: 16px; color: var(--cs); }
-    .group-band { background: var(--sec); border-radius: 8px; padding: 12px 16px; display: flex; flex-direction: column; gap: 2px; }
+    /* Section = underlined heading; record type = card; gray is reserved for the toolbar. */
+    .group-band { border-bottom: 2px solid var(--div); padding: 0 0 8px; display: flex; flex-direction: column; gap: 2px; }
     .group-band h3 { margin: 0; font-size: 18px; line-height: 24px; font-weight: 700; } .group-band p { margin: 0; font-size: 12px; line-height: 16px; color: var(--cs); }
     .records { border: 1px solid var(--div); border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
     .records > header h3 { margin: 0; font-size: 16px; line-height: 24px; font-weight: 700; } .records > header p { margin: 0; font-size: 12px; line-height: 16px; color: var(--cs); }
