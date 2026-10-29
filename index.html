@@ -6584,7 +6584,7 @@ html,body{margin:0;background:var(--jh-color-container-page,#fff);font-family:'F
     .issue-val .grow { flex: 1; max-width: 496px; }
     .muted { color: var(--cs); } .err { color: var(--neg); font-size: 12px; line-height: 16px; }
     .los-note { font-size: 12px; line-height: 16px; color: var(--cs); margin-top: 4px; }
-    .center { margin: 32px auto; width: 560px; display: flex; flex-direction: column; gap: 16px; }
+    .center { margin: 32px auto; width: 560px; display: flex; flex-direction: column; gap: 16px; } .center.loading { align-items: center; text-align: center; }
     .card { border: 1px solid var(--div); border-radius: 8px; padding: 16px 20px; }
     .card h3 { margin: 0 0 12px; font-size: 16px; line-height: 24px; font-weight: 700; }
     .kv { display: grid; grid-template-columns: 180px 1fr; gap: 10px 16px; margin: 0; }
@@ -6638,8 +6638,8 @@ html,body{margin:0;background:var(--jh-color-container-page,#fff);font-family:'F
       <p class="sub">Patricia Gomez · 20240078${this._path.multi?" \xB7 2 loans":""}</p>
       <p class="desc">${o}</p>
       ${_a(a,e==="unreachable"?3:0)}
-    </header>`}_renderBody(){switch(this._screen){case"fields":return s`${this._renderRail()}<main class="pane">${this._renderFields()}</main>`;case"submitting":return s`<main class="pane"><div class="center">
-        <jh-progress indeterminate label=${this._submits>1?"Resubmitting to core\u2026":"Submitting to core\u2026"} hide-value></jh-progress>
+    </header>`}_renderBody(){switch(this._screen){case"fields":return s`${this._renderRail()}<main class="pane">${this._renderFields()}</main>`;case"submitting":return s`<main class="pane"><div class="center loading" role="status" aria-live="polite">
+        <jh-progress type="circular" size="medium" indeterminate label=${this._submits>1?"Resubmitting to core":"Submitting to core"} hide-value></jh-progress>
         <p class="muted">This usually takes a few seconds. If the core doesn’t answer, we retry automatically.</p></div></main>`;case"unreachable":return s`<main class="pane">
         <jh-notification type="alert" appearance="negative" hide-dismiss-button role="alert">
           <jh-icon-circle-exclamation slot="jh-notification-icon"></jh-icon-circle-exclamation>
@@ -6648,8 +6648,8 @@ html,body{margin:0;background:var(--jh-color-container-page,#fff);font-family:'F
         <jh-button appearance="tertiary" label="Save and exit" @click=${t}></jh-button>
         <span class="spacer"></span>
         ${this._status()}
-        ${this._readyToSubmit?s`<jh-button appearance="primary" label=${this._path.multi?"Submit 2 loans to core":"Submit to core"} @click=${this._submit}></jh-button>`:s`<jh-button appearance="primary" label=${this._validating?"Checking\u2026":"Check for issues"} ?disabled=${this._validating||this._saving} @click=${this._checkForIssues}></jh-button>`}
-      </footer>`:e==="submitting"?s`<footer class="foot"><jh-button appearance="primary" label="Submitting…" disabled></jh-button></footer>`:e==="unreachable"?s`<footer class="foot"><jh-button appearance="tertiary" label="Save and exit" @click=${t}></jh-button>
+        ${this._readyToSubmit?s`<jh-button appearance="primary" label=${this._path.multi?"Submit 2 loans to core":"Submit to core"} @click=${this._submit}></jh-button>`:s`<jh-button appearance="primary" label=${this._validating?"Checking\u2026":"Check for issues"} ?pending=${this._validating} ?disabled=${this._saving} @click=${this._checkForIssues}></jh-button>`}
+      </footer>`:e==="submitting"?s`<footer class="foot"><jh-button appearance="primary" label="Submitting…" pending></jh-button></footer>`:e==="unreachable"?s`<footer class="foot"><jh-button appearance="tertiary" label="Save and exit" @click=${t}></jh-button>
         <jh-button appearance="primary" label="Retry submit" @click=${this._submit}></jh-button></footer>`:s`<footer class="foot"><jh-button appearance="primary" label="Back to application" @click=${t}></jh-button></footer>`}_left(e){return e.filter(t=>this._incomplete(t)).length}_renderRail(){let e=[],t=null,o=null,i=this._otherIssues().filter(a=>!this._issueAddressed(a)).length;this._otherIssues().length&&e.push(this._railItem("attention","Needs attention",i?`${i} open`:"All addressed",0,()=>this._jump("attention"),!!i,!1));for(let a of this._sections()){if(!a.fields.some(c=>this._visible(c)))continue;if(a.group!==t){let c=this._left(a.group.categories.flatMap(b=>b.fields||b.records.flatMap(u=>u.fields)));e.push(this._railItem(a.group.id+":group",a.group.label,c?`${c} left`:"Complete",0,()=>this._jump(a.key),!1,!c)),t=a.group,o=null}if(a.record&&a.cat!==o){let c=this._left(a.cat.records.flatMap(b=>b.fields));e.push(this._railItem(a.key+":cat",a.cat.label,c?`${c} left`:"Complete",1,()=>this._jump(a.key),!1,!c))}o=a.cat;let n=this._saveFail&&a.record?.id===this._saveFail.recordId,l=this._left(a.fields),h=n?"Didn\u2019t save":l?`${l} left`:"Complete";e.push(this._railItem(a.key,a.record?a.record.label:a.cat.label,(a.record?.badge?a.record.badge+" \xB7 ":"")+h,a.record?2:1,()=>this._jump(a.key),n,!l&&!n))}return s`<nav class="rail" aria-label="Categories"><jh-list-group accessible-label="Categories">${e}</jh-list-group></nav>`}_railItem(e,t,o,i,a,n,l){let h=this._active===e;return s`<jh-list-item class="rail-item ${i===1?"nested":i===2?"nested2":""}" tabindex="0" role="button"
       aria-current=${h?"true":"false"} ?selected=${h} primary-text=${t} secondary-text=${o} @click=${a}
       @keydown=${c=>{(c.key==="Enter"||c.key===" ")&&(c.preventDefault(),a())}}>
